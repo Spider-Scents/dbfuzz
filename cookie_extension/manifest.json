@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2, // TODO
+  "name": "cookie.txt background",
+  "version": "1.9",
+  "description": "Exports your cookies super fast in a format compatible with wget.\nThis version saves cookies on every page load.",
+  "short_name": "cookies",
+  "offline_enabled": true,
+
+  "permissions": [ "activeTab", "cookies", "tabs", "webNavigation", "downloads", "http://*/*", "https://*/*"],
+
+  "browser_action": {
+    "default_title": "Export cookies.txt",
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  }
+}
