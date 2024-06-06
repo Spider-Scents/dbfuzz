@@ -29,6 +29,24 @@ def graph_reflection_summary(context: Context, xss_found: list[Found], tokens_fo
     PRUNE_IDS       = True  # remove unconnected id (DB) nodes
     ENFORCE_COLUMNS = True  # enforce separate columns for DB and web nodes
     XSS_IMPLY_TOKEN = True  # assume that XSS implies tokens, and only display the XSS edge
+    ADD_TOKENS      = True  # add tokens to the graph
+
+    if not ADD_TOKENS: tokens_found = []
+
+    # REMOVE = [
+    #     'cms_siteprefs.sitepref_value', 'cms_content.metadata', 'cms_content.content_alias', 'cms_layout_stylesheets.media_type', 'cms_layout_stylesheets.media_query', 'cms_module_news_categories.news_category_name', 'cms_content.content_name', 'cms_module_news.news_data', 'cms_module_news.summary', 'cms_module_news.news_extra', 'mybb_templates.template', 'wp_users.display_name', 'tbldoctor.FullName', 'tbldoctor.Email'
+    # ]
+    REMOVE = [] # add any DB nodes to remove to simplify/clean up graph visualization
+
+    REVERSE_REMOVE  = False # only keep from REMOVE, instead of the normal other-way-around
+    DO_REMOVE       = True # actually remove stuff
+
+    if not DO_REMOVE:
+        REMOVE = []
+
+    remove_func = lambda e: e in REMOVE
+    if REVERSE_REMOVE:
+        remove_func = lambda e: e not in REMOVE
 
     options = [f'{ADD_UNKNOWN=}', f'{SHORTEN_DB=}', f'{PRUNE_IDS=}', f'{ENFORCE_COLUMNS=}', f'{XSS_IMPLY_TOKEN=}']
     filename = filename_with_options('graph', app_config, options, folder=folder)
@@ -57,6 +75,8 @@ def graph_reflection_summary(context: Context, xss_found: list[Found], tokens_fo
         unknown_link = not any(map(lambda x: x[0] == id, tokens_found + xss_found))
         if PRUNE_IDS and unknown_link:  # not found while scanning
             continue
+        if remove_func(dbid(context[id])):
+            continue
         dot.node(dbid(context[id]), dbid(context[id]), group="DB")
         id_nodes.add(id)
 
@@ -72,6 +92,8 @@ def graph_reflection_summary(context: Context, xss_found: list[Found], tokens_fo
 
     nodes = set()
     for id, url, _ in xss_found:
+        if remove_func(dbid(context[id])):
+            continue
         nodes.add(url)
     for id, url, _ in tokens_found:
         nodes.add(url)
@@ -83,6 +105,8 @@ def graph_reflection_summary(context: Context, xss_found: list[Found], tokens_fo
     edges_2 = set()
     for id, url, _ in xss_found:
         if id in context:
+            if remove_func(dbid(context[id])):
+                continue
             if not (dbid(context[id]), nodeid(url)) in edges_2:
                 dot.edge(dbid(context[id]), nodeid(url), color="RED")
                 edges_2.add((dbid(context[id]), nodeid(url)))

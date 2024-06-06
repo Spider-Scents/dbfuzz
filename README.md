@@ -9,9 +9,13 @@ Python library requirements are available in the Pipfile of this repository.
 
 # To run on a webapp
 
+## Install Python 3.10
+
+Python 3.10 is specified, but other adjacent versions likely work (untested).
+
 ## Install Chrome and ChromeDriver: https://chromedriver.chromium.org
 
-## Install packages: ```pipenv install```
+## Install Python packages: ```pipenv install```
 
 ## Create a configuration for the webapp, with additional details such database and login credentials.
 
