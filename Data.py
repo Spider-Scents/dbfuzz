@@ -430,39 +430,38 @@ def calculate_database_coverage(context: Context, xss_found: list[Found],
 
         if not Payload.is_fuzzable_col(col_info):
           not_fuzzable += 1
-          continue
         else:
-          fuzzable_columns.add(col)
+            fuzzable_columns.add(col)
 
-        covered = False
+            covered = False
 
-        # Check XSS coverage
-        if table not in xss_db_coverage:
-          no_xss.add(col)
-        elif column not in xss_db_coverage[table]:
-          no_xss.add(col)
-        else:
-            covered = True
+            # Check XSS coverage
+            if table not in xss_db_coverage:
+                no_xss.add(col)
+            elif column not in xss_db_coverage[table]:
+                no_xss.add(col)
+            else:
+                covered = True
 
-        # Check token coverage
-        if table not in tokens_db_coverage:
-          no_tokens.add(col)
-        elif column not in tokens_db_coverage[table]:
-          no_tokens.add(col)
-        else:
-            covered = True
+            # Check token coverage
+            if table not in tokens_db_coverage:
+                no_tokens.add(col)
+            elif column not in tokens_db_coverage[table]:
+                no_tokens.add(col)
+            else:
+                covered = True
 
-        if covered:
-            covered_columns += 1
+            if covered:
+                covered_columns += 1
 
-        if possibly_fuzzable(col_info):
+        if col in possibly_fuzzable_columns:
             csv_rows.append({
                 'Column' : col,
                 'Type' : column_type,
                 'Size' : column_size,
-                'Fuzzed' : Payload.is_fuzzable_col(col_info),
-                'XSS' : col not in no_xss,
-                'Token' : col not in no_tokens
+                'Fuzzed' : col in fuzzable_columns,
+                'XSS' : col in fuzzable_columns and col not in no_xss,
+                'Token' : col in fuzzable_columns and col not in no_tokens
             })
 
     write_msg("\nDatabase Coverage (in terms of XSS/reflections)")
