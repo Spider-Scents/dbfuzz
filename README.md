@@ -36,7 +36,7 @@ And then restore the database for the web application by logging into http://loc
 
 After logging into phpMyAdmin, create the relevant database, then restore the provided backup.
 
-For example, with the docker/dams, in the phpMyAdmin interface, create database 'damsmsdb', then restore it with docker/dams/damsmsdb.sql
+For example, with the docker/doctor, in the phpMyAdmin interface, create database 'damsmsdb', then restore it with docker/doctor/damsmsdb.sql
 
 ## Create a configuration for the web application, with additional details such database and login credentials.
 
@@ -46,7 +46,7 @@ Instructions are included in this file.
 
 Configurations are already included for each of the example web applications.
 
-For example, docker/dams has its configuration at docker/dams/config_doctor.ini
+For example, docker/doctor has its configuration at docker/doctor/config_doctor.ini
 
 ## Then the scanner can be run with: ```pipenv run script --config 'webapp_config.ini'```
 
@@ -59,7 +59,7 @@ In the first run, the script will stop for you to remove dangerous URLs.
 
 Remove dangerous URLs, such as those that delete items or log out the user, manually.
 
-For example, docker/dams will produce a file 'urls\ doctor\ app_config.insert_empty=True.txt' containing
+For example, docker/doctor will produce a file 'urls\ doctor\ app_config.insert_empty=True.txt' containing
 ```
 ["http://localhost/dams/doctor/dashboard.php", "http://localhost/dams/", "http://localhost/dams/doctor/search.php", "http://localhost/dams/doctor/search.php#", "http://localhost/dams/doctor/profile.php", "http://localhost/dams/doctor/profile.php#", "http://localhost/dams/doctor/dashboard.php#", "http://localhost/dams/doctor/all-appointment.php", "http://localhost/dams/doctor/change-password.php", "http://localhost/dams/doctor/new-appointment.php", "http://localhost/dams/doctor/change-password.php#", "http://localhost/dams/doctor/new-appointment.php#", "http://localhost/dams/doctor/all-appointment.php#", "http://localhost/dams/doctor/appointment-bwdates.php", "http://localhost/dams/doctor/approved-appointment.php", "http://localhost/dams/doctor/appointment-bwdates.php#", "http://localhost/dams/doctor/approved-appointment.php#", "http://localhost/dams/doctor/cancelled-appointment.php", "http://localhost/dams/doctor/cancelled-appointment.php#", "http://localhost/dams/doctor/search.php#navbar-customizer", "http://localhost/dams/doctor/profile.php#navbar-customizer", "http://localhost/dams/doctor/search.php#menubar-customizer", "http://localhost/dams/doctor/profile.php#menubar-customizer", "http://localhost/dams/doctor/dashboard.php#navbar-customizer", "http://localhost/dams/doctor/dashboard.php#menubar-customizer", "http://localhost/dams/doctor/change-password.php#navbar-customizer", "http://localhost/dams/doctor/all-appointment.php#navbar-customizer", "http://localhost/dams/doctor/new-appointment.php#navbar-customizer", "http://localhost/dams/doctor/all-appointment.php#menubar-customizer", "http://localhost/dams/doctor/change-password.php#menubar-customizer", "http://localhost/dams/doctor/new-appointment.php#menubar-customizer", "http://localhost/dams/doctor/appointment-bwdates.php#navbar-customizer", "http://localhost/dams/doctor/approved-appointment.php#navbar-customizer", "http://localhost/dams/doctor/appointment-bwdates.php#menubar-customizer", "http://localhost/dams/doctor/approved-appointment.php#menubar-customizer", "http://localhost/dams/doctor/cancelled-appointment.php#navbar-customizer", "http://localhost/dams/doctor/cancelled-appointment.php#menubar-customizer", "http://localhost/dams/doctor/view-appointment-detail.php?editid=3&&aptid=485109480", "http://localhost/dams/doctor/view-appointment-detail.php?editid=4&&aptid=611388102", "http://localhost/dams/doctor/view-appointment-detail.php?editid=5&&aptid=607441873"]
 ```
