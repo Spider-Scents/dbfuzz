@@ -1,5 +1,12 @@
-docker/dams/*
+docker/doctor/*
+docker/hospital/*
+docker/hostel/*
+docker/userlogin/*
+docker/cmsms/*
+
 blackwidow/logs/*
 bw/*
 output/*
 cookies/*
+
+.DS_Store
