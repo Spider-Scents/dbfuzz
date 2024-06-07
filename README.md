@@ -44,6 +44,8 @@ This can be based on config_sample.ini
 
 Instructions are included in this file.
 
+Note that you may have to update the cookies in the config file to allow the initial URL crawler to access authenticated pages, if they are not current.
+
 Configurations are already included for each of the example web applications.
 
 For example, docker/doctor has its configuration at docker/doctor/config_doctor.ini
