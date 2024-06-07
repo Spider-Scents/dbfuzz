@@ -3,6 +3,8 @@ docker/hospital/*
 docker/hostel/*
 docker/userlogin/*
 docker/cmsms/*
+docker/joomla/*
+docker/mybb/*
 
 blackwidow/logs/*
 bw/*
