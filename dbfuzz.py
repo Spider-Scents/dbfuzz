@@ -398,7 +398,7 @@ def main(args: Namespace) -> None:
         insert_backup_file = insert_backup_filename(app_config)
 
         if insert_backup_file.exists() and CACHE_REGEN_INSERT_SENSITIVE:
-            write_msg('cache file for inserts into empty tables found at "{insert_backup_file}", restoring that...')
+            write_msg(f'cache file for inserts into empty tables found at "{insert_backup_file}", restoring that...')
             with open(insert_backup_file, 'rb') as file:
                 insert_backup = file.read()
             db.restore_backup(insert_backup)
@@ -407,7 +407,7 @@ def main(args: Namespace) -> None:
             insert_backup = db.make_backup()
             with open(insert_backup_file, 'wb') as file:
                 file.write(insert_backup)
-            write_msg('wrote cache file for inserts into empty tables at "{insert_backup_file}"')
+            write_msg(f'wrote cache file for inserts into empty tables at "{insert_backup_file}"')
 
 
     ##################
@@ -421,14 +421,14 @@ def main(args: Namespace) -> None:
         sensitive_rows_file = sensitive_rows_filename(app_config)
 
         if sensitive_rows_file.exists() and CACHE_REGEN_INSERT_SENSITIVE:
-            write_msg('cache file for sensitive rows found at "{sensitive_rows_file}", loading that...')
+            write_msg(f'cache file for sensitive rows found at "{sensitive_rows_file}", loading that...')
             with open(sensitive_rows_file, 'rb') as file:
                 sensitive = pickle.load(file)
         else:
             sensitive = find_sensitive_rows(db, app_config, insert_backup)
             with open(sensitive_rows_file, 'wb') as file:
                 pickle.dump(sensitive, file, pickle.HIGHEST_PROTOCOL)
-            write_msg('wrote cache file for sensitive rows at "{sensitive_rows_file}"')
+            write_msg(f'wrote cache file for sensitive rows at "{sensitive_rows_file}"')
 
         # if done before login, would wipe out those cookies in the database
         # also needs to be done after insert empty!
@@ -1048,7 +1048,7 @@ if __name__ == "__main__":
         Data.csv_reflection_summary(context, xss_found, tokens_found, scans - 1, app_config, folder=parent)
 
         # Calculate Database Coverage
-        Data.calculate_database_coverage(context, xss_found, tokens_found, args.backup)
+        Data.calculate_database_coverage(context, xss_found, tokens_found, args.backup, app_config, folder=parent)
 
         # Look for specific things
         Data.look_for(context, xss_found, tokens_found, scans - 1,

@@ -8,7 +8,6 @@ from urllib.parse import urlparse, urljoin
 import json
 import pprint
 import datetime
-import tldextract
 import math
 import os
 import traceback
@@ -22,11 +21,11 @@ import Classes
 
 
 def extract_data_toggle(driver):
-    toggles = driver.find_elements("xpath", "//button[@data-toggle]") 
+    toggles = driver.find_elements("xpath", "//button[@data-toggle]")
     dos = []
     for toggle in toggles:
 
-        xpath = driver.execute_script("return getXPath(arguments[0])", toggle) 
+        xpath = driver.execute_script("return getXPath(arguments[0])", toggle)
         do = {'function_id': '',
               'event': 'click',
               'id': toggle.get_attribute('id'),
@@ -38,7 +37,7 @@ def extract_data_toggle(driver):
     return dos
 
 def extract_inputs(driver):
-    toggles = driver.find_elements("xpath", "//input") 
+    toggles = driver.find_elements("xpath", "//input")
     dos = []
     for toggle in toggles:
         input_type = toggle.get_attribute("type")
@@ -71,11 +70,11 @@ def extract_inputs(driver):
 
 
 def extract_fake_buttons(driver):
-    fake_buttons = driver.find_elements(By.CLASS_NAME, "btn") 
+    fake_buttons = driver.find_elements(By.CLASS_NAME, "btn")
     dos = []
     for button in fake_buttons:
 
-        xpath = driver.execute_script("return getXPath(arguments[0])", button) 
+        xpath = driver.execute_script("return getXPath(arguments[0])", button)
         do = {'function_id': '',
               'event': 'click',
               'id': button.get_attribute('id'),
@@ -117,7 +116,7 @@ def extract_events(driver):
 
     events = set()
     for do in todo:
-        event = Classes.Event(do['function_id'], 
+        event = Classes.Event(do['function_id'],
                       do['event'],
                       do['id'],
                       do['tag'],

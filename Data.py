@@ -1,5 +1,6 @@
 import pickle
 import re
+import shutil
 from csv import DictWriter
 from hashlib import sha256
 from itertools import groupby
@@ -149,6 +150,10 @@ def graph_reflection_summary(context: Context, xss_found: list[Found], tokens_fo
     dot.render(filename, view=True)
 
 
+    short_filename = filename_with_options('graph', app_config, [], folder=folder)
+    dot.render(short_filename, view=False)
+
+
 WEBAPP         = 'web app'
 DBSOURCE       = 'DB source'
 REFLECTIONSINK = 'reflection sink'
@@ -205,6 +210,8 @@ def csv_reflection_summary(context: Context, xss_found: list[Found], tokens_foun
             for _id, group in groups:
                 g = list(group)
                 writer.writerow(csv_reflection(g))
+    short_filename = filename_with_options('reflections', app_config, [], 'csv', folder=folder)
+    shutil.copyfile(filename, short_filename)
 
 
 def print_reflection_summary(context: Context, ids: list[int], xss_found: list[Found],
@@ -363,11 +370,12 @@ def parse_sql_file(sqlfile: str) -> dict:
 
 
 def calculate_database_coverage(context: Context, xss_found: list[Found],
-                                tokens_found: list[Found], sqlfile: str) -> None:
+                                tokens_found: list[Found], sqlfile: str,
+                                app_config: AppConfig, folder: Optional[Path] = None) -> None:
     """Prints database coverage (how much we modify) for a scan"""
-    # TODO is this buggy? misleading labels, at least
 
     db = parse_sql_file(sqlfile)
+    csv_rows = []
 
     # Based on is_fuzzable from payload.py, but without length
     def possibly_fuzzable(c) -> bool:
@@ -408,6 +416,8 @@ def calculate_database_coverage(context: Context, xss_found: list[Found],
     covered_columns = 0
     for table in db:
       for column in db[table]:
+
+        col = table + "." + column
         total_columns += 1
 
         # Check column type and size
@@ -416,29 +426,46 @@ def calculate_database_coverage(context: Context, xss_found: list[Found],
 
         col_info = (column, column_type, column_size, [])
         if possibly_fuzzable(col_info):
-          possibly_fuzzable_columns.add(table + "." + column)
+          possibly_fuzzable_columns.add(col)
 
         if not Payload.is_fuzzable_col(col_info):
           not_fuzzable += 1
           continue
         else:
-          fuzzable_columns.add(table + "." + column)
+          fuzzable_columns.add(col)
+
+        covered = False
 
         # Check XSS coverage
         if table not in xss_db_coverage:
-          no_xss.add(table + "." + column)
+          no_xss.add(col)
         elif column not in xss_db_coverage[table]:
-          no_xss.add(table + "." + column)
+          no_xss.add(col)
         else:
-            covered_columns += 1
+            covered = True
 
         # Check token coverage
         if table not in tokens_db_coverage:
-          no_tokens.add(table + "." + column)
+          no_tokens.add(col)
         elif column not in tokens_db_coverage[table]:
-          no_tokens.add(table + "." + column)
+          no_tokens.add(col)
+        else:
+            covered = True
 
-    write_msg("\nDatabase Coverage")
+        if covered:
+            covered_columns += 1
+
+        if possibly_fuzzable(col_info):
+            csv_rows.append({
+                'Column' : col,
+                'Type' : column_type,
+                'Size' : column_size,
+                'Fuzzed' : Payload.is_fuzzable_col(col_info),
+                'XSS' : col not in no_xss,
+                'Token' : col not in no_tokens
+            })
+
+    write_msg("\nDatabase Coverage (in terms of XSS/reflections)")
     write_msg(f"We cover {covered_columns} columns out of total {total_columns}")
     write_msg(f"We cover {covered_columns} columns out of fuzzable {total_columns-not_fuzzable}")
     # no XSS means either - protected column, or not found
@@ -453,10 +480,18 @@ def calculate_database_coverage(context: Context, xss_found: list[Found],
     print("Possibly fuzzable: ")
     print(possibly_fuzzable_columns)
 
+    # write to CSV
+    filename = filename_with_options('coverage', app_config, [], 'csv', folder=folder)
+    with open(filename, 'w', newline='') as csvfile:
+        writer = DictWriter(csvfile, fieldnames=['Column', 'Type', 'Size', 'Fuzzed', 'XSS', 'Token'])
+        writer.writeheader()
+        for row in csv_rows:
+            writer.writerow(row)
+
 
 def look_for(context: Context, xss_found: list[Found], tokens_found: list[Found], scans: int,
              a_look_id: int, a_look_table: str, a_look_column: str, a_look_row: str) -> None:
-    """Prints information in a scan about a specific ID"""
+    """Prints information present in a scan about a specific ID"""
 
     if a_look_id != -1:
         write_msg('\n')

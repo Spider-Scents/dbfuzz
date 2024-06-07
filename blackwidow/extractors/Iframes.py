@@ -7,7 +7,6 @@ from urllib.parse import urlparse, urljoin
 import json
 import pprint
 import datetime
-import tldextract
 import math
 import os
 import traceback
@@ -63,6 +62,6 @@ def extract_iframes(driver):
             print("Failed to write element")
             print(traceback.format_exc())
 
-    
+
     return iframes
- 
+

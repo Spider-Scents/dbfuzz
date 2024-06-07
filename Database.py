@@ -314,7 +314,8 @@ class Database(object):
              f"--user={self.config.user}",
              f"--password={self.config.password}",
              "--protocol=tcp",
-             self.config.database])
+             self.config.database,
+             "--skip-ssl"])
 
     def restore_backup(self, backup: bytes) -> subprocess.CompletedProcess:
         """Restore a string backup of the database"""
@@ -327,7 +328,8 @@ class Database(object):
                               f"--user={self.config.user}",
                               f"--password={self.config.password}",
                               f"--database={self.config.database}",
-                              "--protocol=tcp"],
+                              "--protocol=tcp",
+                              "--skip-ssl"],
                              stdout=subprocess.PIPE,
                              input=backup)
         self.connection = self.create_server_connection()  # needs a new connection

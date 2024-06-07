@@ -1,0 +1,5 @@
+docker/dams/*
+blackwidow/logs/*
+bw/*
+output/*
+cookies/*

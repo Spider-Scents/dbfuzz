@@ -7,7 +7,6 @@ from urllib.parse import urlparse, urljoin
 import json
 import pprint
 import datetime
-import tldextract
 import math
 import os
 import traceback
@@ -82,7 +81,7 @@ def extract_urls(driver):
     elem = driver.find_elements("tag name", "meta")
     for el in elem:
         try:
-            
+
             if el.get_attribute("http-equiv") and el.get_attribute("content"):
                 #print(el.get_attribute("http-equiv"))
                 #print(el.get_attribute("content"))
