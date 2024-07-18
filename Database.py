@@ -316,6 +316,8 @@ class Database(object):
              "--protocol=tcp",
              self.config.database,
              "--skip-ssl"])
+        # may have to comment out the skip-ssl for some mysqldump versions!
+        # will receive an 'Unknown option' in this case
 
     def restore_backup(self, backup: bytes) -> subprocess.CompletedProcess:
         """Restore a string backup of the database"""
@@ -332,6 +334,8 @@ class Database(object):
                               "--skip-ssl"],
                              stdout=subprocess.PIPE,
                              input=backup)
+        # may have to comment out the skip-ssl for some mysqldump versions!
+        # will receive an 'Unknown option' in this case
         self.connection = self.create_server_connection()  # needs a new connection
         return ret
 
