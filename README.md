@@ -4,7 +4,7 @@ dbfuzz is the prototype implementation of [Spider-Scents: Grey-box Database-awar
 
 # Requirements
 
-dbfuzz is written in Python, and requires Chrome and [Chromedriver](https://googlechromelabs.github.io/chrome-for-testing/), and mysql/mysqldump commands.
+dbfuzz is written in Python, and requires Chrome and [Chromedriver](https://googlechromelabs.github.io/chrome-for-testing/), mysql/mysqldump command, and graphviz.
 Python library requirements are available in the Pipfile of this repository.
 
 Example web applications, located in the docker folder, are run with Docker and Docker Compose.
@@ -21,11 +21,18 @@ This is only needed for the script to execute the ```mysql``` and ```mysqldump``
 
 ## Install Chrome and ChromeDriver: https://chromedriver.chromium.org
 
+## Install Graphviz
+
 ## Install Python packages: ```pipenv install```
 
 ## Launch your web application
 
 Examples are included in the docker folder of this repository.
+
+After extracting a given docker image from an example, correct the permissions of the ```dbfuzz``` directory served by Apache.
+Otherwise, you will get a 403 - Forbidden response when accessing the web application examples.
+
+```chmod 755 dbfuzz```
 
 To launch any of these: ```docker compose up --build``` in the web application's subdirectory.
 
