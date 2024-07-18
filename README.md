@@ -1,6 +1,31 @@
 # dbfuzz
 
+This repository includes source code of ```dbfuzz```, the prototype implementation of our database-aware grey-box scanner for stored XSS, as well as Docker Compose setups for a subset of the evaluated web applications.
+
+Running the scanner against a web application will produce a mapping from database columns to unprotected outputs where XSS payloads are executed.
+These unprotected outputs are code smells that correspond to either dormant stored XSS or stored XSS vulnerabilities.
+
+Manual analysis is required to determine the vulnerability and exploitability of unprotected outputs.
+
 dbfuzz is the prototype implementation of [Spider-Scents: Grey-box Database-aware Web Scanning for Stored XSS](https://www.cse.chalmers.se/research/group/security/spider-scents/#).
+
+```
+├── Breakage.py             # Breakage module
+├── Browser.py              # Browser automation to capture cookies and login
+├── Data.py                 # Data analysis functions
+├── Database.py             # Database module
+├── Helper.py               # Functions used throughout
+├── Payload.py              # Payload module
+├── Scanner.py              # Scanner module
+├── blackwidow              # Black Widow code, used for scanner
+│   ├── ...
+├── cookie_extension        # Chrome extension for recording initial cookies
+│   ├── ...
+├── dbfuzz.py               # Main script
+├── docker                  # Example web applications
+│   ├── ...
+└── meta.py                 # Post-processing analysis of results
+```
 
 # Environment
 
