@@ -2,6 +2,14 @@
 
 dbfuzz is the prototype implementation of [Spider-Scents: Grey-box Database-aware Web Scanning for Stored XSS](https://www.cse.chalmers.se/research/group/security/spider-scents/#).
 
+# Environment
+
+dbfuzz has been tested on Ubuntu 22.04 LTS, 24.04 LTS, and Mac OS Sonoma 14.5.
+
+Instructions for setting up an environment on [Ubuntu 24.04](#ubuntu-environment) are provided.
+
+<!-- [Mac environment](#mac-environment) -->
+
 # Requirements
 
 dbfuzz is written in Python, and requires Chrome and [Chromedriver](https://googlechromelabs.github.io/chrome-for-testing/), mysql/mysqldump command, and graphviz.
@@ -15,7 +23,7 @@ Example web applications, located in the docker folder, are run with Docker and 
 
 Python 3.10 is specified, but other adjacent versions likely work (untested).
 
-## Install MySQL (or MariaDB)
+## Install MariaDB (or MySQL)
 
 This is only needed for the script to execute the ```mysql``` and ```mysqldump``` commands to restore and backup databases.
 
@@ -52,6 +60,8 @@ This can be based on config_sample.ini
 Instructions are included in this file.
 
 Note that you may have to update the cookies in the config file to allow the initial URL crawler to access authenticated pages, if they are not current.
+
+The location of mysql and mysqldump, specified in this config, may also be different on your system.
 
 Configurations are already included for each of the example web applications.
 
@@ -90,3 +100,50 @@ pipenv run script  --config 'webapp_config.ini' --insert-empty --reset-fuzzing -
 https://www.cse.chalmers.se/research/group/security/spider-scents/#
 
 https://www.usenix.org/conference/usenixsecurity24/presentation/olsson
+
+# Ubuntu Environment
+
+## dbfuzz on Ubuntu
+
+### Install Python 3.10
+
+```sudo apt install pipenv```
+
+Install pyenv using its [automatic installer](https://github.com/pyenv/pyenv?tab=readme-ov-file#automatic-installer).
+
+Install pyenv's [suggested build environment requirements](https://github.com/pyenv/pyenv/wiki#suggested-build-environment) for compiling Python on Ubuntu.
+
+Python 3.10 and Python dependencies will be installed with ```pipenv install```
+
+### Install Chrome
+
+Install Chrome with its [deb package](https://www.google.com/chrome/?platform=linux).
+
+[Download Chromedriver](https://googlechromelabs.github.io/chrome-for-testing/) and put the extracted binary on your path.
+
+### Other dbfuzz system requirements
+
+```sudo apt install mariadb-client```
+
+```sudo apt install graphviz```
+
+## Example web applications on Ubuntu
+
+Install Docker using the [apt repository](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository).
+
+## Tested versions
+
+| Package/binary | --version | apt version |
+|---|---|---|
+| pipenv |  | 2023.12.1+ds-1 |
+| pyenv | 2.4.7 |  |
+| python | 3.10.14 |  |
+| google-chrome-stable |  | 126.0.6478.182-1 |
+| chromedriver | 126.0.6478.182 |  |
+| mariadb-client |  | 1:10.11.8-0ubuntu0.24.04.1 |
+| graphviz |  | 2.42.2-9ubuntu0.1 |
+| docker-ce |  | 5:27.0.3-1\~ubuntu.22.04\~jammy |
+| docker-ce-cli |  | 5:27.0.3-1\~ubuntu.22.04\~jammy |
+| docker-compose-plugin |  | 2.28.1-1\~ubuntu.22.04\~jammy |
+
+<!-- # Mac Environment -->
