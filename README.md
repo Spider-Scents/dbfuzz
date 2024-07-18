@@ -6,9 +6,7 @@ dbfuzz is the prototype implementation of [Spider-Scents: Grey-box Database-awar
 
 dbfuzz has been tested on Ubuntu 22.04 LTS, 24.04 LTS, and Mac OS Sonoma 14.5.
 
-Instructions for setting up an environment on [Ubuntu 24.04](#ubuntu-environment) are provided.
-
-<!-- [Mac environment](#mac-environment) -->
+Instructions for setting up an environment on [Ubuntu 24.04](#ubuntu-environment) are provided, as well as a description of the [Mac](#mac-environment) environment.
 
 # Requirements
 
@@ -146,4 +144,18 @@ Install Docker using the [apt repository](https://docs.docker.com/engine/install
 | docker-ce-cli |  | 5:27.0.3-1\~ubuntu.22.04\~jammy |
 | docker-compose-plugin |  | 2.28.1-1\~ubuntu.22.04\~jammy |
 
-<!-- # Mac Environment -->
+# Mac Environment
+
+## Tested versions
+
+| Package/binary | --version | brew version |
+|---|---|---|
+| pipenv | 2022.10.11 |  |
+| python | 3.10.14 |  |
+| Google Chrome | 126.0.6478.183 |  |
+| chromedriver | 126.0.6478.182 |  |
+| mariadb |  | stable 11.4.2 (bottled) |
+| graphviz |  | stable 12.0.0 (bottled) |
+| docker | 27.0.3, build 7d4bcd8 |  |
+
+
