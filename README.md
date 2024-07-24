@@ -9,6 +9,8 @@ Manual analysis is required to determine the vulnerability and exploitability of
 
 dbfuzz is the prototype implementation of [Spider-Scents: Grey-box Database-aware Web Scanning for Stored XSS](https://www.cse.chalmers.se/research/group/security/spider-scents/#).
 
+This repository is licensed under the terms of the MIT license.
+
 ```
 ├── Breakage.py             # Breakage module
 ├── Browser.py              # Browser automation to capture cookies and login
